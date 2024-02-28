@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isitasku_project/bloc/book/book_bloc.dart';
+import 'package:isitasku_project/bloc/jadwal/jadwal_bloc.dart';
 
 import '../widget/bukupaketcard.dart';
 import '../widget/circledate.dart';
@@ -12,6 +15,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<JadwalBloc>().add(GetJadwalEvent());
+    context.read<BookBloc>().add(GetBookEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,11 +111,28 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                const ProgressJadwal(),
-                const ProgressJadwal(),
-                const ProgressJadwal(),
-                const ProgressJadwal(),
-                const ProgressJadwal(),
+                BlocBuilder<JadwalBloc, JadwalState>(
+                  builder: (context, state) {
+                    if (state is JadwalLoaded) {
+                      return SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.data.jadwal!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              child: ProgressJadwal(
+                                mapel: state.data.jadwal![1].mapel.toString(),
+                                jam: state.data.jadwal![1].jam.toString(),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
                 const SizedBox(
                   height: 24,
                 ),
@@ -119,17 +147,32 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 25,
                 ),
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      BukuPaketCard(),
-                      BukuPaketCard(),
-                      BukuPaketCard(),
-                      BukuPaketCard(),
-                    ],
-                  ),
-                )
+                BlocBuilder<BookBloc, BookState>(
+                  builder: (context, state) {
+                    if (state is BookLoaded) {
+                      return SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.data.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              children: [
+                                BukuPaketCard(
+                                  judul: state.data[index].mapel.toString(),
+                                  kelas: state.data[index].kelas.toString(),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
               ],
             ),
           ),

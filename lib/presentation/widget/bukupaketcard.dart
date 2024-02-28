@@ -1,9 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class BukuPaketCard extends StatelessWidget {
   const BukuPaketCard({
-    super.key,
-  });
+    Key? key,
+    required this.judul,
+    required this.kelas,
+  }) : super(key: key);
+
+  final String judul;
+  final String kelas;
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +36,17 @@ class BukuPaketCard extends StatelessWidget {
                 scale: 8,
               ),
             ),
-            const Text(
-              "Bahasa Indonesia",
-              style: TextStyle(
+            Text(
+              judul,
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   fontFamily: 'Poppins'),
             ),
-            const Text(
-              "Kelas XI",
-              style: TextStyle(
+            Text(
+              kelas,
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isitasku_project/bloc/login/login_bloc.dart';
+import 'package:isitasku_project/data/models/request/login_request_model.dart';
+import 'package:isitasku_project/presentation/screen/homepage.dart';
+import 'package:isitasku_project/presentation/widget/navbarwidget.dart';
 import 'package:isitasku_project/presentation/widget/textfieldauth.dart';
 import 'package:isitasku_project/presentation/widget/textfieldpass.dart';
 
@@ -89,25 +94,59 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 40,
               ),
-              SizedBox(
-                  height: 54,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF7560EE),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    child: const Text(
-                      "Masuk",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600),
+              BlocConsumer<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                  if (state is LoginError) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(state.message),
+                      backgroundColor: Colors.red,
+                    ));
+                  }
+                  if (state is LoginLoaded) {
+                    // LocalDatasource().saveToken(state.model.accessToken);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Login berhasil"),
+                      backgroundColor: Colors.orange,
+                    ));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const NavBarWidget()));
+                  }
+                },
+                builder: (context, state) {
+                  if (state is LoginLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return SizedBox(
+                    height: 54,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.read<LoginBloc>().add(DoLoginEvent(
+                                model: LoginRequestModel(
+                              nis: nisController!.text,
+                              password: passwordController!.text,
+                            )));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF7560EE),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      child: const Text(
+                        "Masuk",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
-                  )),
+                  );
+                },
+              ),
             ],
           ),
         ),

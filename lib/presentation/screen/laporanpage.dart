@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isitasku_project/bloc/laporan/laporan_bloc.dart';
+import 'package:isitasku_project/presentation/screen/laporandetailpage.dart';
 import 'package:isitasku_project/presentation/screen/laporanwidget.dart';
 
 class LaporanPage extends StatefulWidget {
@@ -10,6 +13,14 @@ class LaporanPage extends StatefulWidget {
 }
 
 class _LaporanPageState extends State<LaporanPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<LaporanBloc>().add(GetLaporanEvent());
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,37 +41,55 @@ class _LaporanPageState extends State<LaporanPage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 30.0, right: 30, top: 22),
-              child: LaporanWidget(),
-            ),
-            const SizedBox(
-              height: 22,
-            ),
-            Container(
-              width: double.infinity,
-              height: 1.5,
-              color: const Color(0xff404040),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 30.0, right: 30, top: 22),
-              child: LaporanWidget(),
-            ),
-            const SizedBox(
-              height: 22,
-            ),
-            Container(
-              width: double.infinity,
-              height: 1.5,
-              color: const Color(0xff404040),
-            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.783,
+              child: BlocBuilder<LaporanBloc, LaporanState>(
+                builder: (context, state) {
+                  if (state is LaporanLoaded) {
+                    return ListView.builder(
+                      itemCount: state.data.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 30.0, right: 30, top: 22),
+                              child: LaporanWidget(
+                                desc: state.data[index].desc.toString(),
+                                kategori: state
+                                    .data[index].kategori![0].kategori
+                                    .toString(),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 22,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 1.5,
+                              color: const Color(0xff404040),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+            )
           ],
         ),
         floatingActionButton: SizedBox(
           height: 70,
           width: 70,
           child: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const LaporanDetailPage()));
+            },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100)),
             child: const Icon(

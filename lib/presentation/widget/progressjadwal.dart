@@ -1,9 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class ProgressJadwal extends StatelessWidget {
   const ProgressJadwal({
-    super.key,
-  });
+    Key? key,
+    required this.mapel,
+    required this.jam,
+  }) : super(key: key);
+
+  final String mapel;
+  final String jam;
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +44,22 @@ class ProgressJadwal extends StatelessWidget {
           decoration: BoxDecoration(
               color: const Color(0xff7560EE),
               borderRadius: BorderRadius.circular(20)),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("07.00",
-                    style: TextStyle(
+                Text(jam,
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Poppins')),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
-                Text("Bahasa Indonesia",
-                    style: TextStyle(
+                Text(mapel,
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

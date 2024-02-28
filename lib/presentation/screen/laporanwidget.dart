@@ -1,15 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class LaporanWidget extends StatefulWidget {
-  const LaporanWidget({super.key});
+class LaporanWidget extends StatelessWidget {
+  const LaporanWidget({
+    Key? key,
+    required this.desc,
+    required this.kategori,
+  }) : super(key: key);
 
-  @override
-  State<LaporanWidget> createState() => _LaporanWidgetState();
-}
+  final String desc;
 
-class _LaporanWidgetState extends State<LaporanWidget> {
+  final String kategori;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,10 +62,10 @@ class _LaporanWidgetState extends State<LaporanWidget> {
             ),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             width: 368,
-            child: const Text(
-              "Lorem ipsum dolor sit amet consectetur. Morbi morbi ut rutrum accumsan mauris egestas justo eget. Id ut habitasse massa accumsan eu magna eget tincidunt. Ac aenean mollis turpis sed eget.",
+            child: Text(
+              desc,
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
           ),
           Container(
@@ -72,10 +76,10 @@ class _LaporanWidgetState extends State<LaporanWidget> {
             height: 22,
             alignment: Alignment.center,
             margin: const EdgeInsets.only(left: 6),
-            child: const Text(
-              "keamanan",
+            child: Text(
+              kategori,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 10),
+              style: const TextStyle(fontSize: 10),
             ),
           ),
         ],
