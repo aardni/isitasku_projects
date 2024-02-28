@@ -12,7 +12,7 @@ class BookDatasource {
       return Right(List<BookResponseModel>.from(
           jsonDecode(response.body).map((x) => BookResponseModel.fromMap(x))));
     } else {
-      return const Left('get book error');
+      return const Left('Gagal mendapatkan buku');
     }
   }
 }

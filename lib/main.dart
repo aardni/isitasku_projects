@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         // theme: ThemeData(
         //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
         // ),
         darkTheme: ThemeData(brightness: Brightness.dark),
         themeMode: ThemeMode.dark,
-        home: const NavBarWidget(),
+        home: const LoginPage(),
       ),
     );
   }

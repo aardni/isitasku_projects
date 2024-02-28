@@ -1,7 +1,16 @@
+import 'dart:convert';
+import 'dart:math';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isitasku_project/bloc/book/book_bloc.dart';
 import 'package:isitasku_project/bloc/jadwal/jadwal_bloc.dart';
+import 'package:isitasku_project/data/datasources/local_datasource.dart';
+import 'package:isitasku_project/presentation/screen/jadwalpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../widget/bukupaketcard.dart';
 import '../widget/circledate.dart';
@@ -15,12 +24,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String nama = '';
+
   @override
   void initState() {
     // TODO: implement initState
     context.read<JadwalBloc>().add(GetJadwalEvent());
     context.read<BookBloc>().add(GetBookEvent());
+    String? nama;
+    fetchData();
     super.initState();
+  }
+
+  void fetchData() async {
+    final token = LocalDatasource().getToken().toString();
+    // final decodedJson = json.decode(token);
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+    debugPrint(decodedToken.toString());
+    setState(() {
+      nama = token;
+    });
   }
 
   @override
@@ -81,11 +105,31 @@ class _HomePageState extends State<HomePage> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    CircleDate(),
-                    CircleDate(),
-                    CircleDate(),
-                    CircleDate(),
-                    CircleDate()
+                    CircleDate(
+                      hari: "Senin",
+                      tanggal: "26",
+                      active: false,
+                    ),
+                    CircleDate(
+                      hari: "Selasa",
+                      tanggal: "27",
+                      active: false,
+                    ),
+                    CircleDate(
+                      hari: "Rabu",
+                      tanggal: "28",
+                      active: true,
+                    ),
+                    CircleDate(
+                      hari: "Kamis",
+                      tanggal: "29",
+                      active: false,
+                    ),
+                    CircleDate(
+                      hari: "Jumat",
+                      tanggal: "30",
+                      active: false,
+                    )
                   ],
                 ),
                 const SizedBox(
@@ -115,16 +159,25 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, state) {
                     if (state is JadwalLoaded) {
                       return SizedBox(
-                        height: 100,
+                        height:
+                            100 * state.data[0].jadwal!.length.toDouble() - 50,
                         child: ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.data.jadwal!.length,
+                          itemCount: state.data[0].jadwal!.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               child: ProgressJadwal(
-                                mapel: state.data.jadwal![1].mapel.toString(),
-                                jam: state.data.jadwal![1].jam.toString(),
+                                active: true,
+                                mapel: state.data[0].jadwal![index].mapel
+                                    .toString(),
+                                jam:
+                                    state.data[0].jadwal![index].jam.toString(),
+                                jampel: (index + 1).toString(),
                               ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (builder) => const JadwalPage()));
+                              },
                             );
                           },
                         ),

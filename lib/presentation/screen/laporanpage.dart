@@ -55,9 +55,14 @@ class _LaporanPageState extends State<LaporanPage> {
                               padding: const EdgeInsets.only(
                                   left: 30.0, right: 30, top: 22),
                               child: LaporanWidget(
-                                desc: state.data[index].desc.toString(),
-                                kategori: state
-                                    .data[index].kategori![0].kategori
+                                desc: state.data.reversed
+                                    .toList()[index]
+                                    .desc
+                                    .toString(),
+                                kategori: state.data.reversed
+                                    .toList()[index]
+                                    .kategori![0]
+                                    .kategori
                                     .toString(),
                               ),
                             ),
@@ -87,8 +92,12 @@ class _LaporanPageState extends State<LaporanPage> {
           width: 70,
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const LaporanDetailPage()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      builder: (context) => const LaporanDetailPage()))
+                  .then((value) => value
+                      ? context.read<LaporanBloc>().add(GetLaporanEvent())
+                      : null);
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100)),

@@ -6,10 +6,14 @@ class ProgressJadwal extends StatelessWidget {
     Key? key,
     required this.mapel,
     required this.jam,
+    required this.jampel,
+    required this.active,
   }) : super(key: key);
 
   final String mapel;
   final String jam;
+  final String jampel;
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +25,22 @@ class ProgressJadwal extends StatelessWidget {
           padding: const EdgeInsets.only(left: 22.0),
           child: Column(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                   radius: 15.0,
-                  backgroundColor: Color(0xff1DABD7),
-                  child: Text("1",
-                      style: TextStyle(
+                  backgroundColor: const Color(0xff1DABD7),
+                  child: Text(jampel,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Poppins'))),
-              Container(
-                height: 62,
-                width: 4,
-                color: const Color(0xff1DABD7),
-              )
+              active
+                  ? Container(
+                      height: 62,
+                      width: 4,
+                      color: const Color(0xff1DABD7),
+                    )
+                  : Container()
             ],
           ),
         ),

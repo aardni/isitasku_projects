@@ -17,7 +17,7 @@ class JadwalBloc extends Bloc<JadwalEvent, JadwalState> {
   ) : super(JadwalInitial()) {
     on<GetJadwalEvent>((event, emit) async {
       emit(JadwalLoading());
-      final result = await datasource.getJadwalbyDay();
+      final result = await datasource.getAllJadwal();
       result.fold((l) => emit(JadwalError(l)), (r) {
         emit(JadwalLoaded(data: r));
       });

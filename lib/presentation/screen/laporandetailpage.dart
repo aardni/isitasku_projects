@@ -32,7 +32,7 @@ class _LaporanDetailPageState extends State<LaporanDetailPage> {
               listener: (context, state) {
                 if (state is AddLaporanLoaded) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("berhasil menambahkan product"),
+                    content: Text("Berhasil menambahkan komentar"),
                     backgroundColor: Colors.orange,
                   ));
                   debugPrint(state.data.toString());
@@ -140,7 +140,11 @@ class _LaporanDetailPageState extends State<LaporanDetailPage> {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   width: 368,
                   height: 275,
-                  child: const TextField()),
+                  child: TextField(
+                    controller: descController,
+                    maxLines: null,
+                    expands: true,
+                  )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

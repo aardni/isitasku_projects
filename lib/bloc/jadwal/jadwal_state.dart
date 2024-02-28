@@ -8,7 +8,7 @@ final class JadwalInitial extends JadwalState {}
 final class JadwalLoading extends JadwalState {}
 
 final class JadwalLoaded extends JadwalState {
-  final JadwalResponseModel data;
+  final List<JadwalResponseModel> data;
 
   JadwalLoaded({required this.data});
 }

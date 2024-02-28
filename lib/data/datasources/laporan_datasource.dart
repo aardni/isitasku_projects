@@ -27,7 +27,7 @@ class LaporanDatasource {
     if (response.statusCode == 201) {
       return Right(LaporanResponseModel.fromJson(response.body));
     } else {
-      return const Left("Gagal menambahkan product");
+      return const Left("Gagal Menambahkan Komentar");
     }
   }
 }

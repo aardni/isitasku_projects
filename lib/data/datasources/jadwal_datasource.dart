@@ -11,7 +11,18 @@ class JadwalDatasource {
     if (response.statusCode == 200) {
       return Right(JadwalResponseModel.fromJson(jsonDecode(response.body)));
     } else {
-      return const Left('get jadwal error');
+      return const Left('Gagal mendapatkan jadwal');
+    }
+  }
+
+  Future<Either<String, List<JadwalResponseModel>>> getAllJadwal() async {
+    final response = await http.get(Uri.parse(
+        'https://isitasku-backend.onrender.com/api/jadwal/11/sija/1'));
+    if (response.statusCode == 200) {
+      return Right(List<JadwalResponseModel>.from(jsonDecode(response.body)
+          .map((x) => JadwalResponseModel.fromMap(x))));
+    } else {
+      return const Left('Gagal mendapatkan jadwal');
     }
   }
 }
